@@ -27,6 +27,10 @@ pub(super) trait SolveDatabase<I: Interner>: Sized {
     fn interner(&self) -> &I;
 
     fn db(&self) -> &dyn RustIrDatabase<I>;
+
+    fn max_type_size(&self) -> usize {
+        30
+    }
 }
 
 /// The `solve_iteration` method -- implemented for any type that implements

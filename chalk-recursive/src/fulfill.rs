@@ -232,20 +232,22 @@ impl<'s, I: Interner, Solver: SolveDatabase<I>, Infer: RecursiveInferenceTable<I
         // truncate to avoid overflows
         match &obligation {
             Obligation::Prove(goal) => {
-                if self
-                    .infer
-                    .needs_truncation(self.solver.interner(), 30, goal)
-                {
+                if self.infer.needs_truncation(
+                    self.solver.interner(),
+                    self.solver.max_type_size(),
+                    goal,
+                ) {
                     // the goal is too big. Record that we should return Ambiguous
                     self.cannot_prove = true;
                     return;
                 }
             }
             Obligation::Refute(goal) => {
-                if self
-                    .infer
-                    .needs_truncation(self.solver.interner(), 30, goal)
-                {
+                if self.infer.needs_truncation(
+                    self.solver.interner(),
+                    self.solver.max_type_size(),
+                    goal,
+                ) {
                     // the goal is too big. Record that we should return Ambiguous
                     self.cannot_prove = true;
                     return;
